@@ -1,0 +1,128 @@
+<Project>
+  <Name>Telstra</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>API</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>ShieldInterface</Name>
+        <Access>Public</Access>
+        <Location left="302" top="934" />
+        <Size width="323" height="140" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public ShieldInterface()</Member>
+        <Member type="Method">public int sendCommand(char[] buffer, int length)</Member>
+        <Member type="Method">public int getResponse(char[] buffer, int length, int timeout)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Connection4G</Name>
+        <Access>Public</Access>
+        <Location left="106" top="548" />
+        <Size width="342" height="230" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public Connection4G(bool secure, ShieldInterface shield)</Member>
+        <Member type="Method">public int ping(char[] host, char[] responseBuffer)</Member>
+        <Member type="Method">public int openTCP(char[] host, uint16_t port)</Member>
+        <Member type="Method">public int closeTCP()</Member>
+        <Member type="Method">public int TCPRead(char[] buffer, uint16_t length)</Member>
+        <Member type="Method">public int TCPWrite(char[] data, uint16_t length)</Member>
+        <Member type="Method">public int getSignalQuality(char[] data)</Member>
+        <Member type="Method">public int activatePDP(char[] apn, char[] username, char[] password)</Member>
+        <Member type="Method">public int deactivatePDP()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>IoTShield</Name>
+        <Access>Public</Access>
+        <Location left="521" top="495" />
+        <Size width="483" height="366" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public IoTShield(ShieldInterface shield)</Member>
+        <Member type="Method">public void getIMEI(char[] resultBuffer)</Member>
+        <Member type="Method">public void getIP(char[] resultBuffer)</Member>
+        <Member type="Method">public void getTime(char[] resultBuffer)</Member>
+        <Member type="Method">public bool isEC21Connected()</Member>
+        <Member type="Method">public bool isSIMReady()</Member>
+        <Member type="Method">public bool isPDPContextActive()</Member>
+        <Member type="Method">public bool isShieldReady()</Member>
+        <Member type="Method">public void waitUntilShieldIsReady()</Member>
+        <Member type="Method">public void writeCredentials(char[] deviceID, char[] deviceTenant, char[] deviceUsername, char[] devicePassword)</Member>
+        <Member type="Method">public void readCredentials(char[] deviceID, char[] deviceTenant, char[] deviceUsername, char[] devicePassword)</Member>
+        <Member type="Method">public void clearCredentials()</Member>
+        <Member type="Method">public void resetModem()</Member>
+        <Member type="Method">public int getBatteryStateOfCharge()</Member>
+        <Member type="Method">public void getTemperature(char[] temperature)</Member>
+        <Member type="Method">public void getLightLevel(char[] lightLevel)</Member>
+        <Member type="Method">public void updateRTCFromNetwork(char[] resultBuffer)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>TelstraIoT</Name>
+        <Access>Public</Access>
+        <Location left="141" top="127" />
+        <Size width="519" height="315" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public TelstraIoT(Connection4G conn, IoTShield shield)</Member>
+        <Member type="Constructor">public TelstraIoT(char[] host, int port, char[] tenantID, char[] user, char[] password, char[] applicationKey, Connection4G conn, IoTShield shield)</Member>
+        <Member type="Constructor">public TelstraIoT(char[] host, char[] tenantID, char[] user, char[] password, char[] applicationKey, Connection4G conn, IoTShield shield)</Member>
+        <Member type="Method">public int raiseAlarm(char[] type, char[] status, char[] severity, char[] time, char[] text)</Member>
+        <Member type="Method">public int raiseAlarm(char[] type, char[] status, char[] severity, char[] text)</Member>
+        <Member type="Method">public int sendMeasurement(char[] type, char[] time, char[] fragmentName, char[] measurementName, long mValue, char[] mUnit)</Member>
+        <Member type="Method">public int sendMeasurement(char[] type, char[] fragmentName, char[] measurementName, long mValue, char[] mUnit)</Member>
+        <Member type="Method">public void setCredentials(char[] _deviceId, char[] _tenantId, char[] _user, char[] _password, char[] _applicationKey)</Member>
+        <Member type="Method">public void setHost(char[] _host, int _port)</Member>
+        <Member type="Method">public void writeCredentials(char[] deviceID, char[] deviceTenant, char[] deviceUsername, char[] devicePassword)</Member>
+        <Member type="Method">public void readCredentials(char[] deviceID, char[] deviceTenant, char[] deviceUsername, char[] devicePassword)</Member>
+        <Member type="Method">public void clearCredentials()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Association" first="0" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>348</X>
+          <Y>907</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="2">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>585</X>
+          <Y>902</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="1" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="2" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>593</X>
+          <Y>467</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
