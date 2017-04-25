@@ -2,7 +2,18 @@
 #include <telstraiot.h>
 #include <iotshield.h>
 #include <shieldinterface.h>
+#include <Adafruit_PN532.h>
+#include <Wire.h>
 
+//Adafruit Shield
+#define PN532_IRQ   (2)
+#define PN532_RESET (3)
+
+Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
+
+
+
+//Telstra Shield
 char signalQuality[10];
 
 ShieldInterface shieldif;
@@ -26,6 +37,29 @@ char password[] = "arduinoboard2017";
 void setup() {
   Serial.begin(115200);
   delay(5000);
+  //Adafruit
+
+  nfc.begin();
+  uint32_t versiondata = nfc.getFirmwareVersion();
+  if( !versiondata )
+  {
+    Serial.print("Didn't find PN53x board");
+    while (1)
+    {
+      delay(100000);
+    }// haltb
+  }
+
+// Got ok data, print it out!
+  Serial.print("Found chip PN5"); Serial.println((versiondata>>24) & 0xFF, HEX); 
+  Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
+  Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
+  nfc.SAMConfig();
+  Serial.println("Waiting for an ISO14443A Card ...");
+
+  
+  //Telstra Shield
+  
 
   Serial.println(F("[START] PHP Test"));
   
@@ -61,8 +95,7 @@ void setup() {
 
 void loop() {
     delay(1000);
-    conn.getSignalQuality(signalQuality);
-    Serial.println(signalQuality);
+    char lightString[15];
 
 
     
