@@ -55,7 +55,7 @@ void setup() {
   Serial.print("Firmware ver. "); Serial.print((versiondata>>16) & 0xFF, DEC); 
   Serial.print('.'); Serial.println((versiondata>>8) & 0xFF, DEC);
   nfc.SAMConfig();
-  Serial.println("Waiting for an ISO14443A Card ...");
+  Serial.println("Waiting for a Card ...");
 
   
   //Telstra Shield
@@ -94,19 +94,52 @@ void setup() {
 }
 
 void loop() {
-    delay(1000);
-    char lightString[15];
+  uint8_t success;
+  uint8_t uid[] = {0,0,0,0,0,0,0};
+  uint8_t uidLength;
+  delay(1000);
+  char lightString[15];
 
 
+  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength);
+
+  if(success)
+  {
+    // Display some basic information about the card
+    Serial.println("Found a card");
+    Serial.print("  UID Length: ");Serial.print(uidLength, DEC);Serial.println(" bytes");
+    Serial.print("  UID Value: ");
+    nfc.PrintHex(uid, uidLength);
+    Serial.println("");
     
-    /*
-    //Read temperature measurement from device
-    shield.getTemperature(tempString);
-    Serial.print(F("[    ] Temp: "));
-    Serial.println(tempString);
-    */
-    /*
-    shield.getTemperature(tempString);
-    iotPlatform.sendMeasurement("TemperatureMeasurement", "TemperatureMeasurement", "Temperature (degrees Celsius)", tempString, "degrees Celsius");
-    */
+    if (uidLength == 4)
+    {
+      
+      // We probably have an NTAG2xx card (though it could be Ultralight as well)
+      Serial.println("Seems to have correct UID length");    
+      
+    }
+    delay(5000);
+  }
+  
+  Serial.println("############################ Preparing to read MEASUREMENTS #############################");
+  //Read Light measurement from device
+  shield.getLightLevel(lightString);
+  Serial.print(F("[    ] Light: "));
+  Serial.println(lightString);
+
+  Serial.println("############################ Preparing to send MEASUREMENTS #############################");  
+  iotPlatform.sendMeasurement("LightMeasurement", "LightMeasurement", "Light level (lux)", lightString, "lux");
+
+  
+  /*
+  //Read temperature measurement from device
+  shield.getTemperature(tempString);
+  Serial.print(F("[    ] Temp: "));
+  Serial.println(tempString);
+  */
+  /*
+  shield.getTemperature(tempString);
+  iotPlatform.sendMeasurement("TemperatureMeasurement", "TemperatureMeasurement", "Temperature (degrees Celsius)", tempString, "degrees Celsius");
+  */
 }
